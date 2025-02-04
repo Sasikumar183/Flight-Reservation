@@ -1,0 +1,27 @@
+<div class="p-6">
+    <h2 class="text-3xl text-center text-gray-800 mb-4">Your Tickets</h2>
+
+    <!-- Check if there are tickets available -->
+    <div *ngIf="Ticket.length > 0; else noTickets">
+        <div *ngFor="let ticket of Ticket" 
+             class="border border-gray-300 p-4 rounded-lg shadow-md mb-4 flex justify-between items-center">
+            
+            <div class="flex flex-col space-y-2">
+                <h3 class="font-semibold text-gray-900">{{ ticket.flight_name }}</h3>
+                <p class="text-gray-700"><strong>Ticket ID:</strong> {{ ticket.ticket_id }}</p>
+                <p class="text-gray-700"><strong>Schedule ID:</strong> {{ ticket.sche_id }}</p>
+                <p class="text-gray-700"><strong>Flight ID:</strong> {{ ticket.flight_id }}</p>
+                <p class="text-gray-700"><strong>Seat NO:</strong> {{ ticket.seat_no }}</p>                
+                <p class="text-gray-700"><strong>Departure:</strong> {{ ticket.dep_time }} ({{ ticket.dep_loc }})</p>
+                <p class="text-gray-700"><strong>Arrival:</strong> {{ ticket.arr_time }} ({{ ticket.arr_loc }})</p>
+            </div>
+            <div>
+                <button class="text-white bg-blue-500 p-3 rounded-2xl hover:bg-blue-700" (click)="cancelBooking(ticket)">Cancel Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noTickets>
+        <p class="text-red-500 text-center mt-4">No tickets available.</p>
+    </ng-template>
+</div>

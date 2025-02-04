@@ -1,0 +1,37 @@
+<div class="flex flex-col  min-h-screen bg-gray-100 p-6">
+    <!-- Admin Header -->
+    <div class="mb-8 text-center">
+        <h1 class="text-4xl font-bold text-gray-900">Welcome Admin</h1>
+        <button class="bg-red-white text-black rounded p-2 ml-2 float-end"><a href="/adminlogin">🛑 logout</a></button>
+
+    </div>
+
+    <div class="mb-6">
+        <button 
+            class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg float-right shadow-md hover:bg-blue-700 transition-all duration-300">
+            <a routerLink="/addflight">Add Flight</a>
+        </button>
+    </div>
+
+    <div class="w-full bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Flight List</h2>
+
+        <div *ngIf="flights.length > 0; else noFlights">
+            <div *ngFor="let flight of flights" class="border border-gray-200 p-4 rounded-lg shadow-md bg-white mb-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-lg font-medium text-gray-700">ID: {{ flight.flight_id }}</p>
+                        <p class="text-lg text-gray-600">Name: {{ flight.flight_name }}</p>
+                    </div>
+                    <button class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300" (click)="editFlight(flight.flight_id)">
+                        Edit Flight
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <ng-template #noFlights>
+            <p class="text-center text-gray-500 text-lg">No flights available.</p>
+        </ng-template>
+    </div>
+</div>

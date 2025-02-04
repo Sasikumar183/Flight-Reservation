@@ -1,0 +1,45 @@
+<div class="flex flex-col items-center justify-center p-4 bg-gray-100 h-[100vh]">
+    <div class="bg-white border border-gray-300 p-8 rounded-xl shadow-md w-full max-w-md">
+        <h2 class="text-3xl font-semibold text-center text-gray-900 mb-6">Admin Login</h2>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="space-y-5">
+                <!-- Username Field -->
+                <div>
+                    <label for="user_name" class="block font-medium text-gray-700">Username</label>
+                    <input type="text" id="user_name" name="user_name" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        placeholder="Enter your username" [(ngModel)]="loginData.user_name" 
+                        required #user_name="ngModel">
+                    
+                    <p *ngIf="user_name.invalid && user_name.touched" class="text-red-500 text-sm">
+                        Username is required.
+                    </p>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        placeholder="Enter your password" [(ngModel)]="loginData.password" 
+                        required minlength="6" #password="ngModel">
+                    
+                    <p *ngIf="password.invalid && password.touched" class="text-red-500 text-sm">
+                        Password must be at least 6 characters.
+                    </p>
+                </div>
+
+                <!-- Login Button -->
+                <div class="text-center">
+                    <button 
+                        type="submit" 
+                        class="rounded-md p-3 mt-5 w-full 
+                               text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 
+                               disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
+                        [disabled]="loginForm.invalid">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

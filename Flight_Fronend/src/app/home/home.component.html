@@ -1,0 +1,110 @@
+<div class="flex items-start justify-between p-6 bg-gray-100 w-full">
+    <div class="w-1/3 p-4">
+        <h1 *ngIf="userName" class="text-5xl">Hello, {{ userName }}!</h1>
+        <button class="bg-blue-500 p-2 rounded text-white mt-5" (click)="navigate()">View Your Bookings</button>
+        <p *ngIf="!userName">Loading...</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 w-2/3">
+        <form>
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <label class="block font-semibold text-gray-700">Source Location</label>
+                    <input type="text" name="source" [(ngModel)]="flightFilter.source" placeholder="Enter the source"
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block font-semibold text-gray-700">Destination Location</label>
+                    <input type="text" name="destination" [(ngModel)]="flightFilter.destination" placeholder="Entet the destination"
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block font-semibold text-gray-700">Minimum Number of Stoppages</label>
+                  <input type="number" name="stoppages" [(ngModel)]="flightFilter.stoppages" placeholder="Enter the Minimum number of stops"
+                      class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" 
+                    class="w-full bg-blue-500 text-white font-semibold p-2 rounded-lg hover:bg-blue-600 
+                           transition disabled:bg-gray-400 disabled:cursor-not-allowed" (click)="FilterFlight()">
+                    Get Flights
+                </button>
+            </div>
+        </form>
+    </div>
+    <div>
+      <button class="bg-red-white text-black rounded p-2 ml-2 text-sm "><a href="/" class="hover:underline">🛑 logout</a></button>
+    </div>
+</div>
+
+<div class="p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Available Flights</h2>
+
+    <div *ngIf="Flight.length > 0; else noFlights">
+        <div *ngFor="let flight of Flight" 
+             class="border border-gray-300 p-4 rounded-lg shadow-md mb-4 flex justify-between items-center">
+            
+            <div class="flex flex-col space-y-2">
+                <h3 class="font-semibold text-gray-900">{{ flight.flight_name }}</h3>
+                <p class="text-gray-700"><strong>Flight ID:</strong> {{ flight.flight_id }}</p>
+                <p class="text-gray-700"><strong>Departure:</strong> {{ flight.dep_time }} ({{ flight.dep_loc }})</p>
+                <p class="text-gray-700"><strong>Arrival:</strong> {{ flight.arr_time }} ({{ flight.arr_loc }})</p>
+                <p class="text-gray-700"><strong>Available Seats:</strong> {{ flight.available_seats }}</p>
+                <p class="text-green-600 font-bold"><strong>Price:</strong> ₹{{ flight.price }}</p>
+            </div>
+            
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" 
+          (click)="openBookingModal(flight)">
+                Book Now
+            </button>
+        </div>
+    </div>
+    
+    <ng-template #noFlights>
+        <p class="text-red-500 text-center mt-4">No flights available.</p>
+    </ng-template>
+
+
+    <div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-[40%]">
+          <h3 class="text-xl font-semibold text-gray-900">{{ selectedFlight?.flight_name }}</h3>
+          <p><strong>Flight ID:</strong> {{ selectedFlight?.flight_id }}</p>
+          <p><strong>Departure:</strong> {{ selectedFlight?.dep_time }} ({{ selectedFlight?.dep_loc }})</p>
+          <p><strong>Arrival:</strong> {{ selectedFlight?.arr_time }} ({{ selectedFlight?.arr_loc }})</p>
+          <p><strong>Available Seats:</strong> {{ selectedFlight?.available_seats }}</p>
+          <p><strong>Price:</strong> ₹{{ selectedFlight?.price }}</p>
+      
+          <div class="mt-4">
+            <label for="numTickets" class="block text-gray-700">Enter number of tickets:</label>
+            <input 
+              type="number" 
+              id="numTickets" 
+              class="w-full mt-2 p-2 border border-gray-300 rounded-md" 
+              [(ngModel)]="numTickets" 
+              [max]="selectedFlight?.available_seats"
+              min="1"
+            />
+          </div>
+      
+          <div class="mt-4 flex justify-end">
+            <button 
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+              (click)="confirmBooking()"
+            >
+              Confirm Booking
+            </button>
+            <button 
+              class="bg-gray-300 text-black px-4 py-2 rounded-lg ml-2 hover:bg-gray-500 transition"
+              (click)="closeModal()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+    
+</div>
+
